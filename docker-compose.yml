@@ -1,0 +1,14 @@
+services:
+  rtsp-viewer:
+    build:
+      context: .
+      dockerfile: Dockerfile.cam
+    environment:
+      - DISPLAY=${DISPLAY}  # Automatically inherited from the host
+      - RTSP_USER=${RTSP_USER}  # Loaded from .env or system environment
+      - RTSP_PASS=${RTSP_PASS}  # Loaded from .env or system environment
+      - RTSP_IP=${RTSP_IP}  # Loaded from .env or system environment
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+    network_mode: host
+    command: ffplay rtsp://${RTSP_USER}:${RTSP_PASS}@${RTSP_IP}:554/H.264
